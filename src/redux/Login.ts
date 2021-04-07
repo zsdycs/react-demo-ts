@@ -2,12 +2,12 @@ export const loginSuccessCreator = (userName: any) => {
   return {type: 'LOGIN_SUCCESS', userName: userName};
 };
 
-const initLoginState = {
+export const initLoginState = {
   login: false,
   userName: 'Not login',
 };
 
-const loginReducer = (state = initLoginState, action: any) => {
+export const loginReducer = (state = initLoginState, action: any) => {
   switch (action.type) {
     case 'LOGIN_SUCCESS':
       return {login: true, userName: action.userName};
@@ -15,5 +15,3 @@ const loginReducer = (state = initLoginState, action: any) => {
       return state;
   }
 };
-
-export { initLoginState, loginReducer };

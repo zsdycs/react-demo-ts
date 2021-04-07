@@ -11,7 +11,6 @@ class ConsentInfo extends React.PureComponent {
     this.setState({
       disabledButton: !event.target.checked
     });
-    console.log(`checked = ${event.target.checked}`);
   }
 
   clickButton = () => {
