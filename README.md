@@ -1,3 +1,13 @@
+# 简介
+
+项目创建自
+
+```bash
+yarn create react-app react-demo-ts --template typescript
+```
+
+以简单的项目流程为要求学习 react。
+
 # Getting Started with Create React App
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
