@@ -29,7 +29,7 @@ class MockAjax {
 
   login(username: string, password: string) {
     return mockPromise((resolve: Function) => {
-      if (username === '1' && password === '1') {
+      if (username === 'admin' && password === 'admin') {
         result.success = true;
         result.data = username;
         resolve(result);

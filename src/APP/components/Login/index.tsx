@@ -57,7 +57,7 @@ class Login extends React.Component {
           name="username"
           rules={[{ required: true, message: 'Please input your username!' }]}
         >
-          <Input />
+          <Input placeholder="user: admin, psd: admin"/>
         </Form.Item>
   
         <Form.Item

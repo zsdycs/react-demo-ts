@@ -5,7 +5,6 @@ interface Props {
     onConfirm: Function,
 }
 
-
 const DetailsRegistration = (props: Props) => {
 
     const layout = {
@@ -26,7 +25,7 @@ const DetailsRegistration = (props: Props) => {
 
     const onFinish = (data: any) => {
         reset();
-        const values = {...data, 'birth': data['birth'].format(dateFormat)}
+        const values = { ...data, 'birth': data['birth'].format(dateFormat) }
         props.onConfirm(values);
         setIsModalVisible(false);
     };
@@ -45,7 +44,7 @@ const DetailsRegistration = (props: Props) => {
             <Button type="primary" onClick={showModal} style={{ marginBottom: '16px', float: 'right' }}>
                 明細登録
             </Button>
-            <Modal title="明細登録" visible={isModalVisible} onOk={()=> handleOk(form)} onCancel={handleCancel}>
+            <Modal title="明細登録" visible={isModalVisible} onOk={() => handleOk(form)} onCancel={handleCancel}>
                 <Form {...layout} form={form} name="control-hooks" onFinish={onFinish}>
                     <Form.Item name="name" label="名前" rules={[{ required: true }]}>
                         <Input />

@@ -1,87 +1,9 @@
 import React from 'react';
-import { Form, Input, Button, Select, Card, Table, FormInstance } from 'antd';
+import { Form, Button, Card, Table } from 'antd';
 import TableAction from '../TableAction';
 import DetailsRegistration from '../DetailsRegistration';
-
-const { Option } = Select;
-
-const layout = {
-  labelCol: { span: 8 },
-  wrapperCol: { span: 8 },
-};
-
-interface DemoFormProps {
-  dataSource: object,
-  finish: Function,
-  finishData: Function,
-}
-
-class DemoForm extends React.Component<DemoFormProps> {
-  formRef = React.createRef<FormInstance>();
-  componentDidMount() {
-    this.props.finish(this);
-  }
-
-  finish = () => {
-    this.formRef.current!.submit();
-  }
-
-  onProfessionChange = (value: string) => {
-    this.formRef.current!.setFieldsValue({ professionName: undefined });
-    switch (value) {
-      case 'doctors':
-        this.formRef.current!.setFieldsValue({ info: 'こんにちは医者' });
-        return;
-      case 'teacher':
-        this.formRef.current!.setFieldsValue({ info: 'こんにちは先生' });
-        return;
-      case 'other':
-        this.formRef.current!.setFieldsValue({ info: 'こんにちは' });
-    }
-  };
-
-  onFinish = (values: any) => {
-    this.props.finishData(values);
-  };
-
-  render() {
-    return (
-      <Form {...layout}
-        layout="vertical"
-        ref={this.formRef}
-        name="control-ref"
-        initialValues={this.props.dataSource}
-        onFinish={this.onFinish}
-      >
-        <Form.Item name="info" label="情報" rules={[{ required: true }]}>
-          <Input />
-        </Form.Item>
-        <Form.Item name="profession" label="職業" rules={[{ required: true }]}>
-          <Select
-            onChange={this.onProfessionChange}
-            allowClear
-          >
-            <Option value="doctors">医者</Option>
-            <Option value="teacher">先生</Option>
-            <Option value="other">その他</Option>
-          </Select>
-        </Form.Item>
-        <Form.Item
-          noStyle
-          shouldUpdate={(prevValues, currentValues) => prevValues.profession !== currentValues.profession}
-        >
-          {({ getFieldValue }) =>
-            getFieldValue('profession') === 'other' ? (
-              <Form.Item name="professionName" label="職業名" rules={[{ required: true }]}>
-                <Input />
-              </Form.Item>
-            ) : null
-          }
-        </Form.Item>
-      </Form>
-    );
-  }
-};
+import DemoForm1 from '../DemoForm1';
+import DemoForm2 from '../DemoForm2';
 
 class InputForm extends React.PureComponent {
   columns = [
@@ -119,29 +41,6 @@ class InputForm extends React.PureComponent {
     },
   ];
 
-  handleEdit = (data: any, key: React.Key) => {
-    const dataSource = [...this.state.tableData];
-    this.setState({
-      tableData: dataSource.map((item) => {
-        if (item.key === key) {
-          data['key'] = key;
-          return data;
-        }
-        return item;
-      })
-    });
-  }
-
-  handleDelete = (key: React.Key) => {
-    const dataSource = [...this.state.tableData];
-    this.setState({ tableData: dataSource.filter(item => item.key !== key) });
-  }
-
-  getTableData = (key: React.Key) => {
-    const dataSource = [...this.state.tableData];
-    return dataSource.filter(item => item.key === key);
-  }
-
   state = {
     tableData: [
       {
@@ -167,19 +66,42 @@ class InputForm extends React.PureComponent {
       },
     ],
     count: 3,
-    demoFormData: {
+    demoFormData1: {
       info: '',
       profession: 'other',
       professionName: ''
+    },
+    demoFormData2: {
+      height: 162,
+      weight: 66,
     }
   }
 
-  apply = () => {
-    this.demoFormEvent.finish();
+  demoFormEvent1: any;
+  demoFormEvent2: any;
+  formList: string[] = [];
+
+  handleEdit = (data: any, key: React.Key) => {
+    const dataSource = [...this.state.tableData];
+    this.setState({
+      tableData: dataSource.map((item) => {
+        if (item.key === key) {
+          data['key'] = key;
+          return data;
+        }
+        return item;
+      })
+    });
   }
-  demoFormEvent: any;
-  demoFormFinish = (event: any) => {
-    this.demoFormEvent = event;
+
+  handleDelete = (key: React.Key) => {
+    const dataSource = [...this.state.tableData];
+    this.setState({ tableData: dataSource.filter(item => item.key !== key) });
+  }
+
+  getTableData = (key: React.Key) => {
+    const dataSource = [...this.state.tableData];
+    return dataSource.filter(item => item.key === key);
   }
 
   detailsRegistration = (data: any) => {
@@ -193,32 +115,72 @@ class InputForm extends React.PureComponent {
     });
   }
 
-  whenFinishData = (data: any) => {
-    this.setState({ demoFormData: data });
-    const { tableData, demoFormData } = this.state;
-    const params = {
-      tableData,
-      demoFormData
-    };
-    console.log('whenFinishData', params);
-    (this.props as any).history.push({pathname: '/confirmForm', params: params});
+  apply = () => {
+    this.formList = [];
+    this.demoFormEvent1.submitForm();
+    this.demoFormEvent2.submitForm();
+  }
+
+  demoFormFinish1 = (event: any) => {
+    this.demoFormEvent1 = event;
+  }
+
+  demoFormFinish2 = (event: any) => {
+    this.demoFormEvent2 = event;
+  }
+
+  formApply = (name: string, info: { values: any, forms: any }) => {
+    if (name === 'DemoForm1') {
+      this.formList.push('DemoForm1');
+      this.setState({ demoFormData1: info.values });
+    }
+    if (name === 'DemoForm2') {
+      this.formList.push('DemoForm2');
+      this.setState({ demoFormData2: info.values });
+    }
+    if (this.formList.includes('DemoForm1') && this.formList.includes('DemoForm2')) {
+      const { tableData, demoFormData1, demoFormData2 } = this.state;
+      const params = {
+        tableData,
+        demoFormData1,
+        demoFormData2
+      };
+      (this.props as any).history.push({ pathname: '/confirmForm', params: params });
+    }
+  }
+
+  componentWillMount() {
+    if ((this.props as any).location && (this.props as any).location.params) {
+      const { tableData, demoFormData1, demoFormData2 } = (this.props as any).location.params;
+      this.setState({
+        tableData: tableData,
+        demoFormData1: demoFormData1,
+        demoFormData2: demoFormData2,
+      });
+    }
   }
 
   render() {
-    const { tableData, demoFormData } = this.state;
+    const { tableData, demoFormData1, demoFormData2 } = this.state;
 
     return (
       <>
-        <Card title="Card1" bordered={true} style={{ width: '100%', marginBottom: '24px' }}>
-          <DemoForm dataSource={demoFormData} finish={this.demoFormFinish} finishData={(data: any) => this.whenFinishData(data)} />
-        </Card>
-        <Card title="Card2" bordered={true} style={{ width: '100%' }}>
-          <DetailsRegistration onConfirm={(detail: any) => this.detailsRegistration(detail)} />
-          <Table bordered columns={this.columns} dataSource={tableData} />
-        </Card>
-        <Button type="primary" onClick={this.apply} style={{ marginTop: '16px' }}>
-          申請する
-        </Button>
+        <Form.Provider
+          onFormFinish={this.formApply}>
+          <Card title="Card1" bordered={true} style={{ width: '100%', marginBottom: '24px' }}>
+            <DemoForm1 dataSource={demoFormData1} submitForm={this.demoFormFinish1} />
+          </Card>
+          <Card title="Card2" bordered={true} style={{ width: '100%', marginBottom: '24px' }}>
+            <DemoForm2 dataSource={demoFormData2} submitForm={this.demoFormFinish2} />
+          </Card>
+          <Card title="Card3" bordered={true} style={{ width: '100%' }}>
+            <DetailsRegistration onConfirm={(detail: any) => this.detailsRegistration(detail)} />
+            <Table bordered columns={this.columns} dataSource={tableData} />
+          </Card>
+          <Button type="primary" onClick={this.apply} style={{ marginTop: '16px' }}>
+            申請する
+          </Button>
+        </Form.Provider>
       </>
     );
   }

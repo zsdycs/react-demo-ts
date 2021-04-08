@@ -19,10 +19,15 @@ class ConsentInfo extends React.PureComponent {
 
   render() {
     return (
-      <Card title="同意情報" actions={[
-        <Button type="primary" htmlType="submit" onClick={this.clickButton}　disabled={this.state.disabledButton}>
-          同意する
-        </Button>]} bordered={true} style={{ width: '100%' }}>
+      <Card
+        title="同意情報"
+        actions={[
+          <Button type="primary" htmlType="submit" onClick={this.clickButton} disabled={this.state.disabledButton}>
+            同意する
+        </Button>]}
+        bordered={true}
+        style={{ width: '100%' }}
+      >
         <p>content</p>
         <p>content</p>
         <p>content</p>
@@ -30,7 +35,7 @@ class ConsentInfo extends React.PureComponent {
           onChange={this.onChange}
         >確認しました</Checkbox>
       </Card>
-      
+
     );
   }
 

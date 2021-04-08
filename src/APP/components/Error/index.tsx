@@ -4,7 +4,7 @@ class Error extends React.PureComponent {
 
   render() {
     return (
-      <div style={{fontSize: '20px', fontWeight: 'bold'}}>Error</div>
+      <div style={{fontSize: '20px', fontWeight: 'bold'}}>Error, 404 Page not found.</div>
     );
   }
 
